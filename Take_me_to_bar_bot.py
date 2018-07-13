@@ -21,27 +21,39 @@ PROXY = {
 
 bars = None
 bar_counter = 0
+has_bot_stoped = False
 
 
 def start_bot(bot, update):
-    # print(update)
-    first_greeting = 'Привет, {}!'.format(update.message.chat.first_name, '/start')
+    
+    first_greeting = 'Привет, {}! Выбери свои любимые бары!'.format(update.message.chat.first_name, '/start')
 
     update.message.reply_text(first_greeting)
 
+    if has_bot_stoped:
+        return
 
-
-def chat(bot, update):
-    # if ''.format(update.message.text '/next'):
-    #     update.message.reply_text(message)
-    complited = 'Отлично! Бары записаны!'.format(update.message.chat, '/stop')
-    update.message.reply_text(complited)
-
-    user_text = update.message.text
-    logging.info(user_text)
-  
+    next_bars_list = update.message.chat
+   
     bar_info_list = []
-    for bar in bars[0 + bar_counter:4 + bar_counter]:
+    for bar in bars[0:4]:
+        bar_name = bar['Cells']['Name']
+        bar_address = bar['Cells']['Address']
+        bar_info = bar_name + ': ' + bar_address
+        bar_info_list.append(bar_info)
+    message = '\n'.join(bar_info_list)
+    update.message.reply_text(message)
+
+
+def next_bot(bot, update):
+
+    if has_bot_stoped:
+        return
+
+    next_bars_list = update.message.chat, '/next'
+   
+    bar_info_list = []
+    for bar in bars[4 + bar_counter:8 + bar_counter]:
         bar_name = bar['Cells']['Name']
         bar_address = bar['Cells']['Address']
         bar_info = bar_name + ': ' + bar_address
@@ -51,13 +63,41 @@ def chat(bot, update):
 
     global bar_counter
     bar_counter += 4
-   
+
+
+def stop_bot(bot, update):
+    complited = 'Отлично! Бары записаны!'.format(update.message.chat, '/stop')
+    update.message.reply_text(complited) 
+
+    global has_bot_stoped
+    has_bot_stoped = True
+# def chat(bot, update):
+
+#     if has_bot_stoped:
+#         return
+
+#     user_text = update.message.text
+#     logging.info(user_text)
+
+#     bar_info_list = []
+#     for bar in bars[0 + bar_counter:4 + bar_counter]:
+#         bar_name = bar['Cells']['Name']
+#         bar_address = bar['Cells']['Address']
+#         bar_info = bar_name + ': ' + bar_address
+#         bar_info_list.append(bar_info)
+#     message = '\n'.join(bar_info_list)
+#     update.message.reply_text(message)
+
+#     global bar_counter
+#     bar_counter += 4
 
 
 def main():
     mybot = Updater(bot_settings.TAKE_ME_BOT_APIKEY, request_kwargs=PROXY)
     mybot.dispatcher.add_handler(CommandHandler('start', start_bot))
-    mybot.dispatcher.add_handler(MessageHandler(Filters.text, chat))
+    mybot.dispatcher.add_handler(CommandHandler('next', next_bot))
+    mybot.dispatcher.add_handler(CommandHandler('stop', stop_bot))
+    # mybot.dispatcher.add_handler(MessageHandler(Filters.text, chat))
     mybot.start_polling()
     mybot.idle()    
 
