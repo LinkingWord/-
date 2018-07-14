@@ -1,1 +1,4 @@
 /env/
+*.log
+*.txt
+task_while.py

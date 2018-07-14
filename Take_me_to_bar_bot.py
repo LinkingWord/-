@@ -30,30 +30,21 @@ def start_bot(bot, update):
 
     update.message.reply_text(first_greeting)
 
-    if has_bot_stoped:
-        return
+    global bar_counter
+    bar_counter = 0
 
-    next_bars_list = update.message.chat
-   
-    bar_info_list = []
-    for bar in bars[0:4]:
-        bar_name = bar['Cells']['Name']
-        bar_address = bar['Cells']['Address']
-        bar_info = bar_name + ': ' + bar_address
-        bar_info_list.append(bar_info)
-    message = '\n'.join(bar_info_list)
-    update.message.reply_text(message)
+    next_bot(bot, update)
 
-
+    
 def next_bot(bot, update):
 
     if has_bot_stoped:
-        return
+        return 
 
     next_bars_list = update.message.chat, '/next'
    
     bar_info_list = []
-    for bar in bars[4 + bar_counter:8 + bar_counter]:
+    for bar in bars[0 + bar_counter:4 + bar_counter]:
         bar_name = bar['Cells']['Name']
         bar_address = bar['Cells']['Address']
         bar_info = bar_name + ': ' + bar_address
@@ -71,25 +62,6 @@ def stop_bot(bot, update):
 
     global has_bot_stoped
     has_bot_stoped = True
-# def chat(bot, update):
-
-#     if has_bot_stoped:
-#         return
-
-#     user_text = update.message.text
-#     logging.info(user_text)
-
-#     bar_info_list = []
-#     for bar in bars[0 + bar_counter:4 + bar_counter]:
-#         bar_name = bar['Cells']['Name']
-#         bar_address = bar['Cells']['Address']
-#         bar_info = bar_name + ': ' + bar_address
-#         bar_info_list.append(bar_info)
-#     message = '\n'.join(bar_info_list)
-#     update.message.reply_text(message)
-
-#     global bar_counter
-#     bar_counter += 4
 
 
 def main():
