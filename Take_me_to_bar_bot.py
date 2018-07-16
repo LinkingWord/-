@@ -32,13 +32,16 @@ def start_bot(bot, update):
     update.message.reply_text(first_greeting)
 
     button_list = [
-        [telegram.InlineKeyboardButton("row 1", callback_data=first_greeting)],
-        [telegram.InlineKeyboardButton("col1", callback_data='/stop'), 
-        telegram.InlineKeyboardButton("col2", callback_data='/next')]
+        [telegram.InlineKeyboardButton(bars[0]['Cells']['Name'] + ': ' + bars[0]['Cells']['Address'], callback_data=first_greeting)],
+        [telegram.InlineKeyboardButton(bars[1]['Cells']['Name'] + ': ' + bars[1]['Cells']['Address'], callback_data=first_greeting)],
+        [telegram.InlineKeyboardButton(bars[2]['Cells']['Name'] + ': ' + bars[2]['Cells']['Address'], callback_data=first_greeting)],
+        [telegram.InlineKeyboardButton(bars[3]['Cells']['Name'] + ': ' + bars[3]['Cells']['Address'], callback_data=first_greeting)],
+        [telegram.InlineKeyboardButton('Завершить', callback_data='/stop'), 
+        telegram.InlineKeyboardButton('Продолжить', callback_data='/next')]
         ]
 
     reply_markup = telegram.InlineKeyboardMarkup(button_list)
-    bot.send_message(chat_id=74175815, text="Выбери свои любимые бары!", reply_markup=reply_markup)
+    bot.send_message(chat_id=74175815, text='Выбери свои любимые бары!', reply_markup=reply_markup)
 
     global bar_counter
     bar_counter = 0
