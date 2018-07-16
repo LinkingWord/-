@@ -2,3 +2,6 @@
 *.log
 *.txt
 task_while.py
+*.json
+/__pycache__/
+bot_settings.py

@@ -1,7 +1,9 @@
 import logging
 import json
 
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
+
+import telegram
 
 import bot_settings
 
@@ -26,9 +28,17 @@ has_bot_stoped = False
 
 def start_bot(bot, update):
     
-    first_greeting = 'Привет, {}! Выбери свои любимые бары!'.format(update.message.chat.first_name, '/start')
-
+    first_greeting = 'Привет, {}!'.format(update.message.chat.first_name, '/start')
     update.message.reply_text(first_greeting)
+
+    button_list = [
+        [telegram.InlineKeyboardButton("row 1", callback_data=first_greeting)],
+        [telegram.InlineKeyboardButton("col1", callback_data='/stop'), 
+        telegram.InlineKeyboardButton("col2", callback_data='/next')]
+        ]
+
+    reply_markup = telegram.InlineKeyboardMarkup(button_list)
+    bot.send_message(chat_id=74175815, text="Выбери свои любимые бары!", reply_markup=reply_markup)
 
     global bar_counter
     bar_counter = 0
@@ -37,6 +47,8 @@ def start_bot(bot, update):
 
     
 def next_bot(bot, update):
+
+    global bar_counter
 
     if has_bot_stoped:
         return 
@@ -52,7 +64,6 @@ def next_bot(bot, update):
     message = '\n'.join(bar_info_list)
     update.message.reply_text(message)
 
-    global bar_counter
     bar_counter += 4
 
 
