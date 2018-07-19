@@ -32,10 +32,10 @@ def start_bot(bot, update):
     update.message.reply_text(first_greeting)
 
     button_list = [
-        [telegram.InlineKeyboardButton(bars[0]['Cells']['Name'] + ': ' + bars[0]['Cells']['Address'], callback_data=first_greeting)],
-        [telegram.InlineKeyboardButton(bars[1]['Cells']['Name'] + ': ' + bars[1]['Cells']['Address'], callback_data=first_greeting)],
-        [telegram.InlineKeyboardButton(bars[2]['Cells']['Name'] + ': ' + bars[2]['Cells']['Address'], callback_data=first_greeting)],
-        [telegram.InlineKeyboardButton(bars[3]['Cells']['Name'] + ': ' + bars[3]['Cells']['Address'], callback_data=first_greeting)],
+        [telegram.InlineKeyboardButton(bars[0]['Cells']['Name'], callback_data='Паб «ШемроК»')],
+        [telegram.InlineKeyboardButton(bars[1]['Cells']['Name'], callback_data='Кафе Бар Бульвар')],
+        [telegram.InlineKeyboardButton(bars[2]['Cells']['Name'], callback_data='НООКАН')],
+        [telegram.InlineKeyboardButton(bars[3]['Cells']['Name'], callback_data='Чайхана')],
         [telegram.InlineKeyboardButton('Завершить', callback_data='/stop'), 
         telegram.InlineKeyboardButton('Продолжить', callback_data='/next')]
         ]
@@ -48,7 +48,8 @@ def start_bot(bot, update):
 
     next_bot(bot, update)
 
-    
+    print(update)
+        
 def next_bot(bot, update):
 
     global bar_counter
