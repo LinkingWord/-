@@ -31,6 +31,30 @@ def start_bot(bot, update):
     first_greeting = 'Привет, {}!'.format(update.message.chat.first_name, '/start')
     update.message.reply_text(first_greeting)
 
+    # button_list = [
+    #     [telegram.InlineKeyboardButton(bars[0]['Cells']['Name'], callback_data='Паб «ШемроК»')],
+    #     [telegram.InlineKeyboardButton(bars[1]['Cells']['Name'], callback_data='Кафе Бар Бульвар')],
+    #     [telegram.InlineKeyboardButton(bars[2]['Cells']['Name'], callback_data='НООКАН')],
+    #     [telegram.InlineKeyboardButton(bars[3]['Cells']['Name'], callback_data='Чайхана')],
+    #     [telegram.InlineKeyboardButton('Завершить', callback_data='/stop'), 
+    #     telegram.InlineKeyboardButton('Продолжить', callback_data='/next')]
+    #     ]
+
+    # reply_markup = telegram.InlineKeyboardMarkup(button_list)
+    # bot.send_message(chat_id=74175815, text='Выбери свои любимые бары!', reply_markup=reply_markup)
+
+    global bar_counter
+    bar_counter = 0
+
+    buttons(bot, update)
+
+    # next_bot(bot, update)
+
+    print(update)
+
+
+def buttons(bot, update):
+
     button_list = [
         [telegram.InlineKeyboardButton(bars[0]['Cells']['Name'], callback_data='Паб «ШемроК»')],
         [telegram.InlineKeyboardButton(bars[1]['Cells']['Name'], callback_data='Кафе Бар Бульвар')],
@@ -43,12 +67,8 @@ def start_bot(bot, update):
     reply_markup = telegram.InlineKeyboardMarkup(button_list)
     bot.send_message(chat_id=74175815, text='Выбери свои любимые бары!', reply_markup=reply_markup)
 
-    global bar_counter
-    bar_counter = 0
-
-    next_bot(bot, update)
-
     print(update)
+
         
 def next_bot(bot, update):
 
@@ -84,7 +104,8 @@ def main():
     mybot.dispatcher.add_handler(CommandHandler('start', start_bot))
     mybot.dispatcher.add_handler(CommandHandler('next', next_bot))
     mybot.dispatcher.add_handler(CommandHandler('stop', stop_bot))
-    # mybot.dispatcher.add_handler(MessageHandler(Filters.text, chat))
+    mybot.dispatcher.add_handler(MessageHandler(Filters.text, buttons))
+    mybot.dispatcher.add_handler(CallbackQueryHandler(buttons))
     mybot.start_polling()
     mybot.idle()    
 
