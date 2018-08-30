@@ -78,15 +78,28 @@ def next_bot(bot, update):
         return 
 
     next_bars_list = update.message.chat, '/next'
-   
-    bar_info_list = []
+
+    bar_info_list = []   
+    # button_list = [
+    #     [telegram.InlineKeyboardButton(bar_info_list)],
+    #     [telegram.InlineKeyboardButton('Завершить', callback_data='/stop'), 
+    #     telegram.InlineKeyboardButton('Продолжить', callback_data='/next')]
+    #     ]
     for bar in bars[0 + bar_counter:4 + bar_counter]:
         bar_name = bar['Cells']['Name']
         bar_address = bar['Cells']['Address']
         bar_info = bar_name + ': ' + bar_address
-        bar_info_list.append(bar_info)
-    message = '\n'.join(bar_info_list)
-    update.message.reply_text(message)
+        bar_button = [telegram.InlineKeyboardButton(bar_info, callback_data=bar_name)]
+        bar_info_list.append(bar_button)
+    bar_info_list.append(
+        [
+            telegram.InlineKeyboardButton('Завершить', callback_data='/stop'), 
+            telegram.InlineKeyboardButton('Продолжить', callback_data='/next')
+        ]
+    )
+    # message = [telegram.InlineKeyboardButton(bar_info_list)]
+    reply = telegram.InlineKeyboardMarkup(bar_info_list)
+    bot.send_message(chat_id=74175815, text='Выбери свои любимые бары!', reply_markup=reply)
 
     bar_counter += 4
 
