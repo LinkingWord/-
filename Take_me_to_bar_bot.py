@@ -43,14 +43,12 @@ def start_bot(bot, update):
     # reply_markup = telegram.InlineKeyboardMarkup(button_list)
     # bot.send_message(chat_id=74175815, text='Выбери свои любимые бары!', reply_markup=reply_markup)
 
-    global bar_counter
-    bar_counter = 0
-
-    next_bot(bot, update)
-
-    # next_bot(bot, update)
+    # global bar_counter
+    # bar_counter = 0
 
     print(update)
+
+    next_bot(bot, update)   
 
 
 # def buttons(bot, update):
@@ -98,6 +96,8 @@ def next_bot(bot, update):
         ]
     )
     # message = [telegram.InlineKeyboardButton(bar_info_list)]
+    print(update)
+
     reply = telegram.InlineKeyboardMarkup(bar_info_list)
     bot.send_message(chat_id=74175815, text='Выбери свои любимые бары!', reply_markup=reply)
 
@@ -117,7 +117,7 @@ def main():
     mybot.dispatcher.add_handler(CommandHandler('start', start_bot))
     mybot.dispatcher.add_handler(CommandHandler('next', next_bot))
     mybot.dispatcher.add_handler(CommandHandler('stop', stop_bot))
-    mybot.dispatcher.add_handler(MessageHandler(Filters.text, next_bot))
+    mybot.dispatcher.add_handler(MessageHandler(Filters.text, start_bot))
     mybot.dispatcher.add_handler(CallbackQueryHandler(next_bot))
     mybot.start_polling()
     mybot.idle()    
